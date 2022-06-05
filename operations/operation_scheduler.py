@@ -62,9 +62,22 @@ class OperationScheduler:
             ).first()
 
             if (oper_history is None):
-                oper_history = OperationHistory.create(self.db, oper.id)
-                oper.is_in_process = True
-                self.db.session.commit()
-                self.queue.put(oper_history.id)
-                OperationHistoryLog.create(self.db, oper_history.id, "Added to queue.", OperationLogTypeEnum.INFO.value)
-                print(f"{threading.currentThread().ident} OPERATION_SCHEDULER: Operation {repr(oper)} added to queue. Opertion history id: {oper_history.id}")
+                operation_history_id = self.add_operation_to_queue(oper)
+                print(f"{threading.currentThread().ident} OPERATION_SCHEDULER: Operation {repr(oper)} added to queue. Opertion history id: {operation_history_id}")
+    
+
+    def add_operation_to_queue(self, operation_config):
+        """
+            Creates operation history and adds it to queue.
+                Parameters:
+                    operation_config: OperationConfig object.
+                Returns:
+                    operation_history_id: (int) operation_history_id.
+        """
+        oper_history = OperationHistory.create(self.db, operation_config.id)
+        operation_config.is_in_process = True
+        self.db.session.commit()
+        self.queue.put(oper_history.id)
+        OperationHistoryLog.create(self.db, oper_history.id, "Added to queue.", OperationLogTypeEnum.INFO.value)
+        return oper_history.id
+        

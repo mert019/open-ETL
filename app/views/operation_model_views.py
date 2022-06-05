@@ -1,3 +1,6 @@
+from flask import flash, redirect
+
+from flask_appbuilder.actions import action
 from flask_appbuilder.fields import AJAXSelectField
 from flask_appbuilder.fieldwidgets import BS3TextAreaFieldWidget, Select2AJAXWidget, Select2SlaveAJAXWidget
 from flask_appbuilder.models.sqla.interface import SQLAInterface
@@ -14,6 +17,8 @@ from app.models.operation_config import OperationConfig
 from app.models.column_map import ColumnMap
 from app.models.load_target import LoadTarget
 
+from operations import operation_scheduler
+
 
 OPERATION_CATEGORY_NAME = "Operation"
 
@@ -28,7 +33,7 @@ class OperationConfigModelView(ModelView):
     
     list_columns = ['operation_name', 'extract_source', 'load_target', 'is_enabled', 'schedule_unit', 'schedule_interval']
 
-    show_columns = ['operation_name', 'extract_source', 'load_target', 'is_enabled']
+    show_columns = ['operation_name', 'extract_source', 'load_target', 'is_enabled', 'schedule_unit', 'schedule_interval']
 
     add_form_extra_fields = {
         'description': TextAreaField(
@@ -51,6 +56,16 @@ class OperationConfigModelView(ModelView):
         'description': TextAreaField(
             widget=BS3TextAreaFieldWidget())
     }
+
+    @action("run_operation", "Run Now", confirmation="Are you sure you want to run this operation?", icon="fa-play", multiple=False)
+    def run_operation(self, item):
+        if item.is_in_process:
+            flash("Operation currently is in process.", 'warning')
+            return redirect(f"/operationconfigmodelview/show/{item.id}")
+        else:
+            operation_history_id = operation_scheduler.add_operation_to_queue(item)
+            flash("Operation added to queue.", 'success')
+            return redirect(f"/operationhistorylogmodelview/list/?_flt_0_operation_history={operation_history_id}")
 
 appbuilder.add_view(OperationConfigModelView, "Manage Operations", category=OPERATION_CATEGORY_NAME)
 
