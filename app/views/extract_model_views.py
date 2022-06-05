@@ -1,3 +1,6 @@
+from flask import flash, redirect
+
+from flask_appbuilder.actions import action
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView
 from flask_appbuilder.fields import AJAXSelectField
@@ -17,6 +20,8 @@ from app.models.extract_column import ExtractColumn
 from app.models.extract_source import ExtractSource
 from app.models.extract_type import ExtractType
 from app.models.ftp_type import FTPType
+
+from app.utils.check_connection import check_database_connection
 
 
 EXTRACT_CATEGORY_NAME = "Extract"
@@ -59,6 +64,14 @@ class DatabaseExtractConfigModelView(ModelView):
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/databaseextractconfig_extractsourcefeed')),
     }
 
+    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def check_connection(self, item):
+        error_message = check_database_connection(item)
+        if error_message:
+            flash(f"ERROR: {error_message}", 'warning')
+        else:
+            flash("Connection successful.", 'success')
+        return redirect(f"/databaseextractconfigmodelview/show/{item.id}")
 
 appbuilder.add_view(DatabaseExtractConfigModelView, "Database Configurations", category=EXTRACT_CATEGORY_NAME)
 

@@ -1,3 +1,6 @@
+from flask import flash, redirect
+
+from flask_appbuilder.actions import action
 from flask_appbuilder import ModelView
 from flask_appbuilder.fields import AJAXSelectField
 from flask_appbuilder.fieldwidgets import BS3TextAreaFieldWidget, BS3PasswordFieldWidget, Select2AJAXWidget
@@ -15,6 +18,8 @@ from app.models.database_load_config import DatabaseLoadConfig
 from app.models.load_column import LoadColumn
 from app.models.load_target import LoadTarget
 from app.models.load_type import LoadType
+
+from app.utils.check_connection import check_database_connection
 
 
 LOAD_CATEGORY_NAME = "Load"
@@ -57,6 +62,15 @@ class DatabaseLoadConfigModelView(ModelView):
             col_name='load_target',
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/databaseloadconfig_loadtargetfeed')),
     }
+
+    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def check_connection(self, item):
+        error_message = check_database_connection(item)
+        if error_message:
+            flash(f"ERROR: {error_message}", 'warning')
+        else:
+            flash("Connection successful.", 'success')
+        return redirect(f"/databaseloadconfigmodelview/show/{item.id}")
 
 
 appbuilder.add_view(DatabaseLoadConfigModelView, "Database Configuration", category=LOAD_CATEGORY_NAME)

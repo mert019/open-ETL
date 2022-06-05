@@ -12,7 +12,7 @@
     <span style="font-size:32px;">Open ETL</span>
 </div>
 
-Open ETL is a simplified tool to extract data from data sources, process data and to load the extracted & processed data to data sources. 
+Open ETL is a simplified tool to extract data from data sources, process data and to load the extracted & processed data to data targets. 
 
 ## Project Status
 This project is currently in development. \
