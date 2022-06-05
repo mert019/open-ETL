@@ -21,7 +21,7 @@ from app.models.extract_source import ExtractSource
 from app.models.extract_type import ExtractType
 from app.models.ftp_type import FTPType
 
-from app.utils.check_connection import check_database_connection
+from app.utils.check_connection import check_database_connection, check_ftp_connection
 
 
 EXTRACT_CATEGORY_NAME = "Extract"
@@ -95,6 +95,14 @@ class ExcelExtractConfigModelView(ModelView):
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/excelextractconfig_extractsourcefeed')),
     }
 
+    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def check_connection(self, item):
+        error_message = check_ftp_connection(item)
+        if error_message:
+            flash(f"ERROR: {error_message}", 'warning')
+        else:
+            flash("Connection successful.", 'success')
+        return redirect(f"/excelextractconfigmodelview/show/{item.id}")
 
 appbuilder.add_view(ExcelExtractConfigModelView, "Excel Configurations", category=EXTRACT_CATEGORY_NAME)
 
@@ -117,7 +125,15 @@ class CSVExtractConfigModelView(ModelView):
             col_name='extract_source',
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/csvextractconfig_extractsourcefeed')),
     }
-
+    
+    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def check_connection(self, item):
+        error_message = check_ftp_connection(item)
+        if error_message:
+            flash(f"ERROR: {error_message}", 'warning')
+        else:
+            flash("Connection successful.", 'success')
+        return redirect(f"/csvextractconfigmodelview/show/{item.id}")
 
 appbuilder.add_view(CSVExtractConfigModelView, "CSV Configurations", category=EXTRACT_CATEGORY_NAME)
 
