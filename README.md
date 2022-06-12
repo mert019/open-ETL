@@ -88,8 +88,9 @@ Open ETL can load the extracted data to databases (MS SQL Server, Postgresql). M
   height="75"
 />
 
-## Supported Transform Operations
-Currently in development.
+## Transform Operations
+Currently in development. \
+Transform operations will be handled by utilizing staging database.
 
 ## Installation and Configuration
 Currently in development.
