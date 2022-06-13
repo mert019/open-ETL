@@ -1,6 +1,6 @@
-from app.models.database_engine import DatabaseEngineEnum
-from app.models.database_load_config import DatabaseLoadConfig
-from app.models.load_type import LoadTypeEnum
+from database.models.database_engine import DatabaseEngineEnum
+from database.models.database_load_config import DatabaseLoadConfig
+from database.models.load_type import LoadTypeEnum
 
 from operations.loaders.to_database.mssqlserver_loader import MSSQLServerLoader
 from operations.loaders.to_database.postgresql_loader import PostgresqlLoader

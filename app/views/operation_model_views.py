@@ -11,11 +11,10 @@ from wtforms.validators import DataRequired
 
 from app import appbuilder
 
-from app.models.extract_column import ExtractColumn
-from app.models.extract_source import ExtractSource
-from app.models.operation_config import OperationConfig
-from app.models.column_map import ColumnMap
-from app.models.load_target import LoadTarget
+from database.models.extract_column import ExtractColumn
+from database.models.extract_source import ExtractSource
+from database.models.operation_config import OperationConfig
+from database.models.load_target import LoadTarget
 
 from operations import operation_scheduler
 
@@ -27,34 +26,28 @@ class OperationConfigModelView(ModelView):
     datamodel = SQLAInterface(OperationConfig)
     related_views = [OperationConfig, ExtractSource, LoadTarget]
 
-    add_columns = ['operation_name', 'extract_source', 'load_target', 'description', 'schedule_unit', 'schedule_interval']
+    add_columns = ['operation_name', 'extract_source', 'load_target', 'description', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query']
 
-    edit_columns = ['operation_name', 'description', 'is_enabled', 'schedule_unit', 'schedule_interval']
+    edit_columns = ['operation_name', 'extract_source', 'load_target',  'description', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query']
     
-    list_columns = ['operation_name', 'extract_source', 'load_target', 'is_enabled', 'schedule_unit', 'schedule_interval']
+    list_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval']
 
-    show_columns = ['operation_name', 'extract_source', 'load_target', 'is_enabled', 'schedule_unit', 'schedule_interval']
+    show_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query']
 
     add_form_extra_fields = {
         'description': TextAreaField(
             widget=BS3TextAreaFieldWidget()),
 
-        'extract_source': AJAXSelectField('Extract Source',
-            validators=[DataRequired()],
-            datamodel=datamodel,
-            col_name='extract_source',
-            widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/operation_config_extract_source')),
-
-        'load_target': AJAXSelectField('Load Target',
-            validators=[DataRequired()],
-            datamodel=datamodel,
-            col_name='load_target',
-            widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/operation_config_load_target')),
+        'transform_query': TextAreaField(
+            widget=BS3TextAreaFieldWidget()),
     }
 
     edit_form_extra_fields = {
         'description': TextAreaField(
-            widget=BS3TextAreaFieldWidget())
+            widget=BS3TextAreaFieldWidget()),
+
+        'transform_query': TextAreaField(
+            widget=BS3TextAreaFieldWidget()),
     }
 
     @action("run_operation", "Run Now", confirmation="Are you sure you want to run this operation?", icon="fa-play", multiple=False)
@@ -67,44 +60,8 @@ class OperationConfigModelView(ModelView):
             flash("Operation added to queue.", 'success')
             return redirect(f"/operationhistorylogmodelview/list/?_flt_0_operation_history={operation_history_id}")
 
+    @action("view_operation_history", "History", confirmation=None, icon=None, multiple=False)
+    def view_operation_history(self, item):
+        return redirect(f"/operationhistorymodelview/list/?_flt_0_operation_config={item.id}&_oc_OperationHistoryModelView=id&_od_OperationHistoryModelView=desc")
+
 appbuilder.add_view(OperationConfigModelView, "Manage Operations", category=OPERATION_CATEGORY_NAME)
-
-
-class ColumnMapModelView(ModelView):
-    datamodel = SQLAInterface(ColumnMap)
-    related_views = [ColumnMap, ExtractColumn]
-
-    add_columns = ['operation_config', 'extract_column', 'load_column']
-
-    list_columns = ['operation_config', 'extract_column', 'load_column']
-
-    show_columns = ['operation_config', 'extract_column', 'load_column']
-
-    add_form_extra_fields = {
-
-        'operation_config': AJAXSelectField('Operation',
-            id="operation_config_dropdownlist_id",
-            validators=[DataRequired()],
-            datamodel=datamodel,
-            col_name='operation_config',
-            widget=Select2AJAXWidget(endpoint='/columnmapmodelview/api/column/add/operation_config')),
-
-        'extract_column': AJAXSelectField('Extract Column',
-            datamodel=datamodel,
-            validators=[DataRequired()],
-            description="You need to choose operation first. Shows unmapped extract columns.",
-            col_name='extract_column',
-            widget=Select2SlaveAJAXWidget(master_id='operation_config_dropdownlist_id',
-            endpoint='/api/v1/dropdownfeederapi/columnmap_extractcolumn/{{ID}}')),
-
-        'load_column': AJAXSelectField('Load Column',
-            datamodel=datamodel,
-            description="You need to choose operation first. Shows unmapped load columns.",
-            validators=[DataRequired()],
-            col_name='load_column',
-            widget=Select2SlaveAJAXWidget(master_id='operation_config_dropdownlist_id',
-            endpoint='/api/v1/dropdownfeederapi/columnmap_loadcolumn/{{ID}}')),
-    }
-
-
-appbuilder.add_view(ColumnMapModelView, "Map Columns", category=OPERATION_CATEGORY_NAME)

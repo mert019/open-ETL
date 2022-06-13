@@ -1,5 +1,5 @@
-from app.models.operation_history_log import OperationHistoryLog
-from app.models.operation_log_type import OperationLogTypeEnum
+from database.models.operation_history_log import OperationHistoryLog
+from database.models.operation_log_type import OperationLogTypeEnum
 
 
 class BaseLoader:
@@ -17,7 +17,7 @@ class BaseLoader:
         self.load_target = self.operation_config.load_target
 
 
-    def load_data(self, data, column_map, load_columns):
+    def load_data(self, data, load_columns):
         """Interface method definition for loader objects."""
         raise NotImplementedError
 

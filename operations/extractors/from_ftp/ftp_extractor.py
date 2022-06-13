@@ -3,15 +3,15 @@ import paramiko
 import re
 from uuid import uuid4
 
-from app.models.extract_file import ExtractFile
-from app.models.extract_type import ExtractTypeEnum
-from app.models.ftp_type import FTPTypeEnum
-from app.models.operation_history import OperationHistory
+from database.models.extract_file import ExtractFile
+from database.models.extract_type import ExtractTypeEnum
+from database.models.ftp_type import FTPTypeEnum
+from database.models.operation_history import OperationHistory
 
 from operations.extractors.extractor_base import BaseExtractor
 
 
-DOWNLOAD_PATH = 'extract_files\\'
+DOWNLOAD_PATH = 'temp\\extract_files\\'
 
 
 class FTPExtractor(BaseExtractor):

@@ -2,15 +2,14 @@ from datetime import datetime, timedelta
 import threading
 from time import sleep
 
-from app.models.operation_config import OperationConfig
-from app.models.operation_history import OperationHistory
-from app.models.operation_history_log import OperationHistoryLog
-from app.models.operation_log_type import OperationLogTypeEnum
-from app.models.schedule_unit import ScheduleUnitEnum
+from database.models.operation_config import OperationConfig
+from database.models.operation_history import OperationHistory
+from database.models.operation_history_log import OperationHistoryLog
+from database.models.operation_log_type import OperationLogTypeEnum
+from database.models.schedule_unit import ScheduleUnitEnum
 
 
 class OperationScheduler:
-
 
     def __init__(self, queue):
         self.queue = queue

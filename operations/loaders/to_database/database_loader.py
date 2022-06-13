@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import column
 
-from app.models.database_engine import DatabaseEngineEnum
+from database.models.database_engine import DatabaseEngineEnum
 
 from operations.loaders.loader_base import BaseLoader
 
@@ -30,11 +30,9 @@ class DatabaseLoader(BaseLoader):
         self.database = database_load_config.conn_db_name
 
         # database load actions
-        self.start_transaction = database_load_config.start_transaction
         self.delete_all_before_load = database_load_config.delete_all_before_load
         self.insert_record = database_load_config.insert_record
         self.update_record = database_load_config.update_record
-        self.use_column_maps_only = database_load_config.use_column_maps_only
 
         # query templates. These should be initialized in sub classes.
         self._delete_query_template = None

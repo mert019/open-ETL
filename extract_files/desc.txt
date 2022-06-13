@@ -1,1 +1,0 @@
-In this directory, the extracted data files will be stored.

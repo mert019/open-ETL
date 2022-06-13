@@ -1,6 +1,6 @@
 import pandas as pd
 
-from app.models.extract_file import ExtractFile
+from database.models.extract_file import ExtractFile
 
 from operations.extractors.from_ftp.ftp_extractor import FTPExtractor, DOWNLOAD_PATH
 

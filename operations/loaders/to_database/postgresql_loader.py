@@ -44,7 +44,7 @@ class PostgresqlLoader(DatabaseLoader):
         self.upsert_query_template = upsert_query_template
 
 
-    def load_data(self, df, column_map, load_columns):
+    def load_data(self, df, load_columns):
 
         if not self.update_record and not self.insert_record:
             raise ValueError("update_record and insert_record cannot be false at the same time.")
@@ -56,17 +56,6 @@ class PostgresqlLoader(DatabaseLoader):
         for obj in load_columns:
             if obj.is_makes_record_unique:
                 makes_unique_column_names.append(obj.column_name)
-
-        # if use only mapped columns selected, drop unmapped columns.
-        if self.use_column_maps_only:
-            mapped_load_column_names = []
-            for obj in column_map:
-                l_col = obj.load_column
-                mapped_load_column_names.append(l_col.column_name)
-            df.drop(df.columns.difference(mapped_load_column_names), axis=1, inplace=True)
-            for c_name in makes_unique_column_names:
-                if c_name not in mapped_load_column_names:
-                    makes_unique_column_names.remove(c_name)
 
         if len(makes_unique_column_names) == 0 and self.update_record:
             raise ValueError("""Makes unique columns are not sepcified for update operation. 

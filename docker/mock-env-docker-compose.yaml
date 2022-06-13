@@ -1,0 +1,40 @@
+# docker-compose -f .\mock-env-docker-compose.yaml up -d
+# docker-compose -f .\mock-env-docker-compose.yaml stop
+
+# Docker containers for testing purposes.
+
+version: '3.1'
+
+volumes:
+  open-etl-mock-postgres-db:
+  open-etl-mock-mssql-db:
+  open-etl-mock-sftp:
+
+services:
+
+  postgres-db:
+    image: postgres:alpine3.16
+    ports:
+      - 9000:5432
+    environment:
+      POSTGRES_PASSWORD: postgres123456
+    volumes:
+      - open-etl-mock-postgres-db:/var/lib/postgresql/data
+
+  mssql-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 9001:1433
+    volumes:
+      - open-etl-mock-mssql-db:/var/lib/mssqlql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password@123456
+
+  sftp-server:
+    image: atmoz/sftp
+    ports:
+      - 9002:22
+    volumes:
+      - open-etl-mock-sftp:/home
+    command: foo:pass:::upload

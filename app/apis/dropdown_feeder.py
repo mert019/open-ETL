@@ -4,23 +4,21 @@ from flask_appbuilder.api import BaseApi, expose
 
 from app import appbuilder, db
 
-from app.models.column_data_type import ColumnDataType
-from app.models.column_map import ColumnMap
-from app.models.csv_extract_config import CSVExtractConfig
-from app.models.database_engine import DatabaseEngine
-from app.models.database_extract_config import DatabaseExtractConfig
-from app.models.database_load_config import DatabaseLoadConfig
-from app.models.excel_extract_config import ExcelExtractConfig
-from app.models.extract_column import ExtractColumn
-from app.models.extract_source import ExtractSource
-from app.models.extract_type import ExtractType, ExtractTypeEnum
-from app.models.load_column import LoadColumn
-from app.models.load_target import LoadTarget
-from app.models.load_type import LoadType, LoadTypeEnum
-from app.models.operation_config import OperationConfig
-from app.models.operation_history import OperationHistory
-from app.models.operation_history_log import OperationHistoryLog
-from app.models.operation_log_type import OperationLogType
+from database.models.column_data_type import ColumnDataType
+from database.models.csv_extract_config import CSVExtractConfig
+from database.models.database_engine import DatabaseEngine
+from database.models.database_extract_config import DatabaseExtractConfig
+from database.models.database_load_config import DatabaseLoadConfig
+from database.models.excel_extract_config import ExcelExtractConfig
+from database.models.extract_column import ExtractColumn
+from database.models.extract_source import ExtractSource
+from database.models.extract_type import ExtractType, ExtractTypeEnum
+from database.models.load_target import LoadTarget
+from database.models.load_type import LoadType, LoadTypeEnum
+from database.models.operation_config import OperationConfig
+from database.models.operation_history import OperationHistory
+from database.models.operation_history_log import OperationHistoryLog
+from database.models.operation_log_type import OperationLogType
 
 
 class DropdownFeederApi(BaseApi):
@@ -68,114 +66,6 @@ class DropdownFeederApi(BaseApi):
 
         response_val = []
         for obj in load_targets:
-            response_val.append({"id": obj.id, "text": repr(obj)})
-
-        return jsonify(response_val)
-
-
-    @expose('/operation_config_extract_source')
-    @has_access
-    def operation_config_extract_source_feed(self):
-        """
-            operation_config_extract_source_feed finds all the unassigned ExtractSource for OperationConfig.
-            Returns a list of dictionary. Dictionary keys are id & text.
-        """
-        assigned_extract_sources = db.session.query(OperationConfig).all()
-        assigned_extract_source_ids = []
-
-        for obj in assigned_extract_sources:
-            assigned_extract_source_ids.append(obj.extract_source.id)
-
-        extract_sources = db.session.query(ExtractSource).filter(
-            ExtractSource.id.notin_(assigned_extract_source_ids)).all()
-
-        response_val = []
-        for obj in extract_sources:
-            response_val.append({"id": obj.id, "text": repr(obj)})
-
-        return jsonify(response_val)
-
-    
-    @expose('/operation_config_load_target')
-    @has_access
-    def operation_config_load_target_feed(self):
-        """
-            operation_config_load_target_feed finds all the unassigned LoadTarget for OperationConfig.
-            Returns a list of dictionary. Dictionary keys are id & text.
-        """
-        assigned_load_targets = db.session.query(OperationConfig).all()
-        assigned_load_target_ids = []
-
-        for obj in assigned_load_targets:
-            assigned_load_target_ids.append(obj.extract_source.id)
-
-        extract_sources = db.session.query(LoadTarget).filter(
-            LoadTarget.id.notin_(assigned_load_target_ids)).all()
-
-        response_val = []
-        for obj in extract_sources:
-            response_val.append({"id": obj.id, "text": repr(obj)})
-
-        return jsonify(response_val)
-
-
-    @expose('columnmap_extractcolumn/<oper_id>')
-    @has_access
-    def column_map_extract_column_feed(self, oper_id):
-        """
-            column_map_extract_column_feed finds all the unassigned extract columns for the given operation config id.
-            Returns a list of dictionary. Dictionary keys are id & text.
-        """
-        oper_id = int(oper_id)
-
-        operation_config = db.session.query(OperationConfig).filter_by(id=oper_id).first()
-
-        extract_source_id = operation_config.extract_source_id
-
-        column_maps = db.session.query(ColumnMap).filter(
-            ColumnMap.operation_config_id == oper_id).all()
-
-        mapped_extract_source_column_ids = []
-        for obj in column_maps:
-            mapped_extract_source_column_ids.append(obj.extract_column_id)
-
-        extract_columns = db.session.query(ExtractColumn).filter(
-            (ExtractColumn.extract_source_id == extract_source_id)
-            & ExtractColumn.id.notin_(mapped_extract_source_column_ids)).all()
-
-        response_val = []
-        for obj in extract_columns:
-            response_val.append({"id": obj.id, "text": repr(obj)})
-
-        return jsonify(response_val)
-
-
-    @expose('columnmap_loadcolumn/<oper_id>')
-    @has_access
-    def column_map_load_column_feed(self, oper_id):
-        """
-            column_map_load_column_feed finds all the unassigned load columns for the given operation config id.
-            Returns a list of dictionary. Dictionary keys are id & text.
-        """
-        oper_id = int(oper_id)
-
-        operation_config = db.session.query(OperationConfig).filter_by(id=oper_id).first()
-
-        load_target_id = operation_config.load_target_id
-
-        column_maps = db.session.query(ColumnMap).filter(
-            ColumnMap.operation_config_id == oper_id).all()
-
-        mapped_load_target_column_ids = []
-        for obj in column_maps:
-            mapped_load_target_column_ids.append(obj.load_column_id)
-
-        load_columns = db.session.query(LoadColumn).filter(
-            (LoadColumn.load_target_id == load_target_id)
-            & LoadColumn.id.notin_(mapped_load_target_column_ids)).all()
-
-        response_val = []
-        for obj in load_columns:
             response_val.append({"id": obj.id, "text": repr(obj)})
 
         return jsonify(response_val)

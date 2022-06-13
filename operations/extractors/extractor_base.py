@@ -1,6 +1,6 @@
-from app.models.extract_column import ExtractColumn
-from app.models.operation_history_log import OperationHistoryLog
-from app.models.operation_log_type import OperationLogTypeEnum
+from database.models.extract_column import ExtractColumn
+from database.models.operation_history_log import OperationHistoryLog
+from database.models.operation_log_type import OperationLogTypeEnum
 
 
 class BaseExtractor:

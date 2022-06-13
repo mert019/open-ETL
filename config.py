@@ -13,9 +13,18 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SECRET_KEY = "\2\1thisismyscretkey\1\2\e\y\y\h"
 
 # The SQLAlchemy connection string.
-SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.db")
+# SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.db")
 # SQLALCHEMY_DATABASE_URI = 'mysql://myapp@localhost/myapp'
-# SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
+# SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres123456@localhost:8081/OpenETL'
+if os.getenv('SQLALCHEMY_DATABASE_URI') is None:
+    raise Exception("SQLALCHEMY_DATABASE_URI is not specified.")
+SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
+
+# STAGING_DATABASE_URI = 'postgresql://postgres:postgres123456@localhost:8081/OpenETLStaging'
+if os.getenv('STAGING_DATABASE_URI') is None:
+    raise Exception("STAGING_DATABASE_URI is not specified.")
+STAGING_DATABASE_URI = os.getenv('STAGING_DATABASE_URI')
+
 
 # Flask-WTF flag for CSRF
 CSRF_ENABLED = True

@@ -11,17 +11,18 @@ from wtforms.validators import DataRequired
 
 from app import appbuilder
 
-from app.models.column_data_type import ColumnDataType
-from app.models.csv_extract_config import CSVExtractConfig
-from app.models.database_engine import DatabaseEngine
-from app.models.database_extract_config import DatabaseExtractConfig
-from app.models.excel_extract_config import ExcelExtractConfig
-from app.models.extract_column import ExtractColumn
-from app.models.extract_source import ExtractSource
-from app.models.extract_type import ExtractType
-from app.models.ftp_type import FTPType
+from database.models.column_data_type import ColumnDataType
+from database.models.csv_extract_config import CSVExtractConfig
+from database.models.database_engine import DatabaseEngine
+from database.models.database_extract_config import DatabaseExtractConfig
+from database.models.excel_extract_config import ExcelExtractConfig
+from database.models.extract_column import ExtractColumn
+from database.models.extract_source import ExtractSource
+from database.models.extract_type import ExtractType
+from database.models.ftp_type import FTPType
 
-from app.utils.check_connection import check_database_connection, check_ftp_connection
+from utils.database_utils import check_database_connection
+from utils.ftp_utils import check_ftp_connection
 
 
 EXTRACT_CATEGORY_NAME = "Extract"
@@ -32,6 +33,8 @@ class ExtractSourceModelView(ModelView):
     related_views = [ExtractSource, ExtractType]
 
     list_columns = ['extract_source_name', 'extract_type']
+
+    edit_columns = ['extract_source_name']
 
     add_form_extra_fields = {
         'description': TextAreaField(
@@ -141,6 +144,6 @@ appbuilder.add_view(CSVExtractConfigModelView, "CSV Configurations", category=EX
 class ExtractColumnModelView(ModelView):
     datamodel = SQLAInterface(ExtractColumn)
     related_views = [ExtractColumn, ColumnDataType, ExtractSource]
-    list_columns = ['extract_source', 'column_name', 'column_data_type']
+    list_columns = ['extract_source', 'column_name', 'column_data_type', 'column_index']
 
 appbuilder.add_view(ExtractColumnModelView, "Manage Columns", category=EXTRACT_CATEGORY_NAME)

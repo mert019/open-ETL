@@ -1,0 +1,36 @@
+{% extends 'appbuilder/baselayout.html' %}
+
+{% block content %}
+{{ super() }}
+<table class="table table-striped">
+    <tr>
+      <th>Status</th>
+      <th>Operation Name</th>
+      <th>Last Success</th>
+      <th>Last Failure</th>
+    </tr>
+{% for obj in dashboard_info %}
+    <tr>
+      <td>
+        {% if obj.status %}
+        <span style="min-width: 20px;
+          min-height: 20px;
+          background-color: green;
+          border-radius: 50%;
+          display: inline-block;"></span>
+        {% else %}
+        <span style="min-width: 20px;
+          min-height: 20px;
+          background-color: red;
+          border-radius: 50%;
+          display: inline-block;"></span>
+        {% endif %}
+          
+        </td>
+      <td>{{obj.operation_name}}</td>
+      <td>{{obj.last_success.strftime("%B %d, %Y - %H:%M")}}</td>
+      <td>{{obj.last_failure.strftime("%B %d, %Y - %H:%M")}}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}

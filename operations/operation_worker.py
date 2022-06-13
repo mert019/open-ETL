@@ -3,20 +3,20 @@ import threading
 from datetime import datetime
 import traceback
 
-from app.models.column_map import ColumnMap
-from app.models.extract_column import ExtractColumn
-from app.models.load_column import LoadColumn
-from app.models.operation_history_log import OperationHistoryLog
-from app.models.operation_history import OperationHistory
-from app.models.operation_log_type import OperationLogTypeEnum
+from database.models.extract_column import ExtractColumn
+from database.models.load_column import LoadColumn
+from database.models.operation_history_log import OperationHistoryLog
+from database.models.operation_history import OperationHistory
+from database.models.operation_log_type import OperationLogTypeEnum
 
+from operations.extractors.database_extractor import DatabaseExtractor
 from operations.extractors.extractor_factory import extractor_factory
 from operations.loaders.loader_factory import loader_factory
-from operations.utils.map_columns import map_columns
+
+from operations.staging_handler import StagingHandler
 
 
 class OperationWorker:
-
 
     def __init__(self, queue):
         self.queue = queue
@@ -33,6 +33,7 @@ class OperationWorker:
 
 
     def work_loop(self):
+
         while True:
             sleep(5)
 
@@ -67,15 +68,12 @@ class OperationWorker:
 
     def work(self, operation_history_id):
 
-        # region: get config information.
+        # get config information.
         operation_history = self.db.session.query(OperationHistory).filter_by(id=operation_history_id).first()
         operation_config = operation_history.operation_config
         extract_source = operation_config.extract_source
         load_target = operation_config.load_target
-        extract_columns = self.db.session.query(ExtractColumn).filter_by(extract_source_id=extract_source.id).all()
         load_columns = self.db.session.query(LoadColumn).filter_by(load_target_id=load_target.id).all()
-        column_maps = self.db.session.query(ColumnMap).filter_by(operation_config_id=operation_config.id).all()
-        # endregion
 
         # create extractor object.
         extractor = extractor_factory(extract_source, operation_history, self.db)
@@ -83,15 +81,18 @@ class OperationWorker:
         # create loader object.
         loader = loader_factory(load_target, operation_history, self.db)
 
-        # extract data
+        # extract data.
         data = extractor.get_data()
 
-        # column mapping
-        data = map_columns(data, column_maps)
-        
-        # TODO: transform data.
+        # Use staging database only if transform query exists.
+        if operation_config.transform_query and len(operation_config.transform_query) > 0:
+            staging_handler = StagingHandler()
+            # load data to staging database.
+            staging_handler.load(data, operation_config.operation_name)
+            OperationHistoryLog.create(self.db, operation_history.id, "Data loaded to staging database.", OperationLogTypeEnum.INFO.value)
+            # extract data from staging database.
+            data = staging_handler.extract(operation_config.transform_query)
+            OperationHistoryLog.create(self.db, operation_history.id, f"{data.shape[0]} rows extracted from staging database.", OperationLogTypeEnum.INFO.value)
 
-        # TODO: Set column data types.
-        
         # load data
-        loader.load_data(data, column_maps, load_columns)
+        loader.load_data(data, load_columns)

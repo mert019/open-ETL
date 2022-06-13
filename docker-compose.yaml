@@ -1,0 +1,26 @@
+version: '3.1'
+
+volumes:
+  open-etl-db:
+
+services:
+
+  open-etl:
+    image: open-etl:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - open-etl-postgres-db
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:postgres123456@open-etl-postgres-db:5432/OpenETL
+      STAGING_DATABASE_URI: postgresql://postgres:postgres123456@open-etl-postgres-db:5432/OpenETLStaging
+
+  open-etl-postgres-db:
+    image: postgres:alpine3.16
+    ports:
+      - 8081:5432
+    environment:
+      POSTGRES_PASSWORD: postgres123456
+    volumes:
+      - open-etl-db:/var/lib/postgresql/data
+      - ./docker/database:/docker-entrypoint-initdb.d
