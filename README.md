@@ -9,7 +9,7 @@
     alt="etl-image"
     width="100"
     />
-    <span style="font-size:32px;">Open ETL</span>
+    <h1 style="display:inline-block;">Open ETL</h1>
 </div>
 
 Open ETL is a simplified tool to extract data from data sources, process data and to load the extracted & processed data to data targets. 
@@ -25,7 +25,7 @@ Simplified web based interface to create ETL operations. \
 Detailed monitoring of the ETL operations.
 
 ## Supported Data Sources
-Open ETL can extract data from databases (MS SQL Server, Postgresql) and XLSX & CSV files from FTP/SFTP servers. Many other sources will be added in the future.
+Open ETL can extract data from databases (MS SQL Server, Postgresql) and XLSX & CSV files from FTP/SFTP servers. If you want additional data sources please create an issue.
 
 <img
   style="background-color:white;border-radius:0px;"
@@ -67,7 +67,7 @@ Open ETL can extract data from databases (MS SQL Server, Postgresql) and XLSX & 
 
 
 ## Supported Data Targets
-Open ETL can load the extracted data to databases (MS SQL Server, Postgresql). Many other data load targets will be added in the future.
+Open ETL can load the extracted data to databases (MS SQL Server, Postgresql). If you want additional data targets please create an issue.
 
 <img
   style="background-color:white;border-radius:0px;"
@@ -89,11 +89,16 @@ Open ETL can load the extracted data to databases (MS SQL Server, Postgresql). M
 />
 
 ## Transform Operations
-Currently in development. \
-Transform operations will be handled by utilizing staging database.
+Transform operations handled by utilizing staging database.
 
 ## Installation and Configuration
-Currently in development.
+### Using Docker
+Docker image will be available soon in Docker Hub.
+```console
+git clone https://github.com/mert019/open-ETL
+cd open-ETL
+docker-compose up -d
+```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

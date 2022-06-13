@@ -6,7 +6,7 @@ volumes:
 services:
 
   open-etl:
-    image: open-etl:latest
+    image: mert019/open-etl:latest
     ports:
       - 8080:8080
     depends_on:
