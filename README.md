@@ -97,6 +97,7 @@ Docker image will be available soon in Docker Hub.
 ```console
 git clone https://github.com/mert019/open-ETL
 cd open-ETL
+docker build -t mert019/open-etl:latest .
 docker-compose up -d
 ```
 
