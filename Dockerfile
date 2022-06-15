@@ -13,4 +13,5 @@ EXPOSE 8080
 
 ENV FLASK_APP=run.py
 
-CMD [ "./docker/init.sh"]
+# CMD [ "./docker/init.sh"]
+CMD [ "python", "debug.py"]
