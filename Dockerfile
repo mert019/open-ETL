@@ -6,6 +6,8 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 COPY . .
+# Convert line CRLF to LF.
+RUN sed -i -e 's/\r$//' ./docker/init.sh
 
 EXPOSE 8080
 
