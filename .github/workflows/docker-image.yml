@@ -19,7 +19,7 @@ jobs:
       run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USERNAME}}/open-etl:latest
       
     - name: Login to DockerHub
-      run: docker login -u ${{secrets.DOCKER_USERNAME}} -P ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
       
     - name: Push image to DockerHub
       run: docker push ${{secrets.DOCKER_USERNAME}}/open-etl
