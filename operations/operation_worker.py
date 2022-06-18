@@ -1,6 +1,9 @@
+from datetime import datetime
+from flask_appbuilder import SQLA
+import logging
+from queue import Queue
 from time import sleep
 import threading
-from datetime import datetime
 import traceback
 
 from database.models.extract_column import ExtractColumn
@@ -18,52 +21,68 @@ from operations.staging_handler import StagingHandler
 
 class OperationWorker:
 
-    def __init__(self, queue):
+    def __init__(self, queue:Queue):
         self.queue = queue
+        self.finished_operations = []
         self.worker_threads = []
 
 
-    def run(self, db, workers=1):
+    def run(self, db:SQLA, workers=1):
         self.db = db
+        # Operation workers
         for _ in range(workers):
             w_thread = threading.Thread(target=self.work_loop)
             w_thread.daemon =True
             self.worker_threads.append(w_thread)
             w_thread.start()
+        # Operation finisher
+        w_f_thread = threading.Thread(target=self.finish_operation_loop)
+        w_f_thread.daemon = True
+        self.worker_threads.append(w_f_thread)
+        w_f_thread.start()
 
 
     def work_loop(self):
-
         while True:
-            sleep(5)
+            try:
+                sleep(5)
+                self.work_handler()
+            except:
+                self.db.session.rollback()
+                logging.exception(f"{threading.currentThread().ident} OPERATION_WORKER ERROR:")
 
-            if self.queue.qsize() > 0:
 
-                queue_item = self.queue.get()
-                print(f"{threading.currentThread().ident} OPERATION_WORKER: Queue item is taken. {queue_item}")
-                OperationHistoryLog.create(self.db, queue_item, "Taken from queue.", OperationLogTypeEnum.INFO.value)
+    def work_handler(self):
 
-                operation_history = self.db.session.query(OperationHistory).filter_by(id=queue_item).first()
-                
-                try:
-                    self.work(queue_item)
-                    operation_history.is_successfully_ended = True
-                    OperationHistoryLog.create(self.db, queue_item, "Operation completed successfully.", OperationLogTypeEnum.INFO.value)
-                    print(f"{threading.currentThread().ident} OPERATION_WORKER: Operation completed successfully. OperationHistory: {queue_item}")
+        if self.queue.qsize() > 0:
 
-                except Exception as ex:
-                    operation_history.is_successfully_ended = False
-                    OperationHistoryLog.create(self.db, queue_item, f"Operation failed. {str(ex)}", OperationLogTypeEnum.ERROR.value)
-                    print(f"{threading.currentThread().ident} OPERATION_WORKER: Operation failed. OperationHistory: {queue_item}")
-                    traceback.print_exc()
+            queue_item = self.queue.get()
+            print(f"{threading.currentThread().ident} OPERATION_WORKER: Queue item is taken. {queue_item}")
+            OperationHistoryLog.create(self.db, queue_item, "Taken from queue.", OperationLogTypeEnum.INFO.value)
 
-                finally:
-                    operation_history.end_date_time = datetime.now()
-                    operation_history.operation_config.is_in_process = False
-                    self.db.session.commit()
+            operation_history = self.db.session.query(OperationHistory).filter_by(id=queue_item).first()
+            
+            try:
+                self.work(queue_item)
+                operation_history.is_successfully_ended = True
+                OperationHistoryLog.create(self.db, queue_item, "Operation completed successfully.", OperationLogTypeEnum.INFO.value)
+                print(f"{threading.currentThread().ident} OPERATION_WORKER: Operation completed successfully. OperationHistory: {queue_item}")
 
-            else:
-                print(f"{threading.currentThread().ident} OPERATION_WORKER: Queue is empty.")
+            except Exception as ex:
+                operation_history.is_successfully_ended = False
+                OperationHistoryLog.create(self.db, queue_item, f"Operation failed. {str(ex)}", OperationLogTypeEnum.ERROR.value)
+                print(f"{threading.currentThread().ident} OPERATION_WORKER: Operation failed. OperationHistory: {queue_item}")
+                traceback.print_exc()
+
+            finally:
+                operation_history.end_date_time = datetime.now()
+                operation_history.operation_config.is_in_process = False
+                self.finished_operations.append(queue_item)
+                self.db.session.commit()
+
+
+        else:
+            print(f"{threading.currentThread().ident} OPERATION_WORKER: Queue is empty.")
 
 
     def work(self, operation_history_id):
@@ -96,3 +115,30 @@ class OperationWorker:
 
         # load data
         loader.load_data(data, load_columns)
+
+
+    def finish_operation_loop(self) -> None:
+        while True:
+            try:
+                sleep(5)
+                self.finish_operation()
+            except:
+                self.db.session.rollback()
+                logging.exception(f"{threading.currentThread().ident} OPERATION_WORKER (finish_operation) ERROR:")
+
+
+    def finish_operation(self) -> None:
+        """
+            When the operation finishes, operation_config.is_in_process flag should set to False.
+            On database connection errors, this flag may stuck in False value. 
+            To prevent that situation finish_operation function added.
+        """
+        successfully_setted = []
+        for operation_history_id in self.finished_operations:
+            operation_history = self.db.session.query(OperationHistory).filter(
+                OperationHistory.id == operation_history_id).first()
+            operation_history.operation_config.is_in_process = False
+            self.db.session.commit()
+            successfully_setted.append(operation_history_id)
+        for i in successfully_setted:
+            self.finished_operations.remove(i)

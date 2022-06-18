@@ -1,0 +1,30 @@
+{% extends 'appbuilder/baselayout.html' %}
+
+{% block head_css %}
+{{ super() }}
+      <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+<h3>System Status</h3>
+<ul class="list-group">
+    <li class="list-group-item">
+        <span class="status-ball {{ 'bg-green' if app_db_health else 'bg-red' }}"></span>
+        <span>Open ETL Database Connection</span>
+    </li>
+    <li class="list-group-item">
+        <span class="status-ball {{ 'bg-green' if staging_db_health else 'bg-red' }}"></span>
+        <span>Staging Database Connection</span>
+    </li>
+    <li class="list-group-item">
+        <span class="status-ball {{ 'bg-green' if worker_health else 'bg-red' }}"></span>
+        <span>Workers</span>
+    </li>
+    <li class="list-group-item">
+        <span class="status-ball {{ 'bg-green' if scheduler_health else 'bg-red' }}"></span>
+        <span>Scheduler</span>
+    </li>
+  </ul>
+
+{% endblock %}

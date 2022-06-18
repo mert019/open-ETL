@@ -1,0 +1,15 @@
+.bg-green {
+    background-color: green;
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.status-ball {
+    display: inline-block;  
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}

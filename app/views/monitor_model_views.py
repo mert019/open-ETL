@@ -1,15 +1,21 @@
-from flask import redirect
+from flask import redirect, render_template
 
 from flask_appbuilder.actions import action
-from flask_appbuilder import ModelView
+from flask_appbuilder import ModelView, BaseView, expose, has_access
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 
 from app import appbuilder
+
+from config import SQLALCHEMY_DATABASE_URI, STAGING_DATABASE_URI
 
 from database.models.operation_history import OperationHistory
 from database.models.operation_config import OperationConfig
 from database.models.operation_history_log import OperationHistoryLog
 from database.models.operation_log_type import OperationLogType
+
+from operations import operation_scheduler, operation_worker
+
+from utils.database_utils import check_database_connection_from_url
 
 
 MONITOR_CATEGORY_NAME = "Monitor"
@@ -35,3 +41,27 @@ class OperationHistoryLogModelView(ModelView):
     list_columns = ['operation_history', 'operation_log_type', 'log_message', 'log_date_time']
 
 appbuilder.add_view(OperationHistoryLogModelView, "Operation Logs", category=MONITOR_CATEGORY_NAME)
+
+
+class SystemView(BaseView):
+
+    default_view = 'status'
+
+    @expose('/status/')
+    @has_access
+    def status(self):
+        """/systemview/status view shows user the health of the components of Open ETL."""
+        app_db_health = check_database_connection_from_url(SQLALCHEMY_DATABASE_URI) == None
+        staging_db_health = check_database_connection_from_url(STAGING_DATABASE_URI) == None
+        worker_health = sum(map(lambda x: x.is_alive(), operation_worker.worker_threads)) == len(operation_worker.worker_threads)
+        scheduler_health = operation_scheduler.operation_scheduler_thread.is_alive()
+        self.update_redirect()
+        return render_template("system_status.html", 
+            appbuilder=self.appbuilder, 
+            app_db_health=app_db_health,
+            staging_db_health=staging_db_health,
+            worker_health=worker_health,
+            scheduler_health=scheduler_health)
+
+appbuilder.add_view_no_menu(SystemView, "Status")
+appbuilder.add_link("System Status", href='/systemview/status', category=MONITOR_CATEGORY_NAME)

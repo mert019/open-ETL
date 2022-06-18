@@ -1,4 +1,7 @@
 from datetime import datetime, timedelta
+from flask_appbuilder import SQLA
+import logging
+from queue import Queue
 import threading
 from time import sleep
 
@@ -11,11 +14,11 @@ from database.models.schedule_unit import ScheduleUnitEnum
 
 class OperationScheduler:
 
-    def __init__(self, queue):
+    def __init__(self, queue:Queue):
         self.queue = queue
 
 
-    def run(self, db):
+    def run(self, db:SQLA):
         self.db = db
         OperationConfig.set_all_is_in_process_to_false(self.db)
         self.operation_scheduler_thread = threading.Thread(target=self.schedule_loop)
@@ -25,8 +28,12 @@ class OperationScheduler:
 
     def schedule_loop(self):
         while True:
-            sleep(15)
-            self.schedule()
+            try:
+                sleep(15)
+                self.schedule()
+            except:
+                self.db.session.rollback()
+                logging.exception("OPERATION_SCHEDULER ERROR:")
 
 
     def schedule(self):
@@ -65,7 +72,7 @@ class OperationScheduler:
                 print(f"{threading.currentThread().ident} OPERATION_SCHEDULER: Operation {repr(oper)} added to queue. Opertion history id: {operation_history_id}")
     
 
-    def add_operation_to_queue(self, operation_config):
+    def add_operation_to_queue(self, operation_config:OperationConfig):
         """
             Creates operation history and adds it to queue.
                 Parameters:

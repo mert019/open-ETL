@@ -35,8 +35,19 @@ def check_database_connection(database_config) -> str:
             Returns:
                 error_message: Returns error message if connection fails, otherwise returns None.
     """
+    conn_url = get_connection_url(database_config)
+    return check_database_connection_from_url(conn_url)
+
+
+def check_database_connection_from_url(conn_url):
+    """
+        Checks database connection success using the given connection url.
+            Parameters:
+                conn_url: Database connection url.
+            Returns:
+                error_message: Returns error message if connection fails, otherwise returns None.
+    """
     try:
-        conn_url = get_connection_url(database_config)
         engine = create_engine(conn_url)
         connection = engine.connect()
         connection.close()
