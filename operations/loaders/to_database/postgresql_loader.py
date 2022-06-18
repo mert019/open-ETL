@@ -9,7 +9,7 @@ class PostgresqlLoader(DatabaseLoader):
     def __init__(self, database_load_config, operation_history, db) -> None:
         super().__init__(database_load_config, operation_history, db)
 
-        delete_query_template = 'DELETE FROM "$TABLE_NAME$"; '
+        delete_query_template = 'DELETE FROM $TABLE_NAME$; '
 
         transaction_query_template = f"""
                 DO $$ BEGIN
