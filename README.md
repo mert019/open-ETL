@@ -1,15 +1,15 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/mert019/open-etl)
+
 # Open ETL
 
 <div style="margin-bottom: 16px;">
     <img
-    style="vertical-align:middle;margin-right:16px;"
     src="https://user-images.githubusercontent.com/67417415/168584766-a148a778-8dae-4a83-9a1e-88f5e833ca21.png"
     alt="etl-image"
     width="100"
     />
-    <h1 style="display:inline-block;">Open ETL</h1>
 </div>
 
 Open ETL is a simplified tool to extract data from data sources, process data and to load the extracted & processed data to data targets. 
@@ -93,13 +93,18 @@ Transform operations handled by utilizing staging database.
 
 ## Installation and Configuration
 ### Using Docker
-Docker image will be available soon in Docker Hub.
 ```console
 git clone https://github.com/mert019/open-ETL
 cd open-ETL
-docker build -t mert019/open-etl:latest .
 docker-compose up -d
 ```
+Go to http://localhost:8080/ \
+Default admin user:
+  - username: admin
+  - password: password
+
+## Documentation
+Documentation will be provided soon.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

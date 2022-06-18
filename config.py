@@ -25,6 +25,9 @@ if os.getenv('STAGING_DATABASE_URI') is None:
     raise Exception("STAGING_DATABASE_URI is not specified.")
 STAGING_DATABASE_URI = os.getenv('STAGING_DATABASE_URI')
 
+WORKER_COUNT = 3
+if os.getenv('WORKER_COUNT'):
+    WORKER_COUNT = int(os.getenv('WORKER_COUNT'))
 
 # Flask-WTF flag for CSRF
 CSRF_ENABLED = True
