@@ -1,36 +1,69 @@
 {% extends 'appbuilder/baselayout.html' %}
 
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+{% endblock %}
+
 {% block content %}
 {{ super() }}
-<table class="table table-striped">
-    <tr>
-      <th>Status</th>
-      <th>Operation Name</th>
-      <th>Last Success</th>
-      <th>Last Failure</th>
-    </tr>
-{% for obj in dashboard_info %}
-    <tr>
-      <td>
-        {% if obj.status %}
-        <span style="min-width: 20px;
-          min-height: 20px;
-          background-color: green;
-          border-radius: 50%;
-          display: inline-block;"></span>
+<div class="container">
+
+  <h2>Operation Summary</h2>
+
+  <p>Updated at {{ updated_at.strftime("%m/%d/%Y, %H:%M:%S") }}</p>
+
+  {% if operation_summary|length == 0 %}
+  <p>There is no defined operation.</p>
+  {% endif %}
+
+  {% for o_c in operation_summary %}
+  <div class="panel-group mt-5">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#collapse-{{o_c.id}}">&#9660;</a> <a
+            href="/operationconfigmodelview/show/{{o_c.id}}">{{o_c.operation_name}}</a>
+        </h4>
+      </div>
+      <div id="collapse-{{o_c.id}}" class="panel-collapse collapse in">
+        {% if operation_summary[o_c]|length != 0 %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center"></th>
+              <th scope="col" class="text-center">Status</th>
+              <th scope="col" class="text-center">Started At</th>
+              <th scope="col" class="text-center">Finished At</th>
+              <th scope="col" class="text-center">Records Extracted</th>
+              <th scope="col" class="text-center">Records Loaded</th>
+              <th scope="col" class="text-center">Logs</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o_h in operation_summary[o_c] %}
+            <tr>
+              <td class="text-center"><span class="status-ball {{ 'bg-green' if o_h.is_successfully_ended else 'bg-red' if o_h.end_date_time else 'bg-gray' if (updated_at - o_h.start_date_time) < timedelta(minutes=10) else 'bg-red' }}"></span></td>
+              <td class="text-center">{{ 'Successful' if o_h.is_successfully_ended else 'Failed' if o_h.end_date_time else 'In Progress' if (updated_at - o_h.start_date_time) < timedelta(minutes=10) else 'Failed' }}</td>
+              <td class="text-center">{{ o_h.start_date_time.strftime("%m/%d/%Y, %H:%M:%S") }}</td>
+              <td class="text-center">{{ o_h.end_date_time.strftime("%m/%d/%Y, %H:%M:%S") if o_h.end_date_time else '-' }}</td>
+              <td class="text-center">{{ o_h.records_extracted }}</td>
+              <td class="text-center">{{ o_h.records_loaded }}</td>
+              <td class="text-center"><a href="/operationhistorylogmodelview/list/?_flt_0_operation_history={{o_h.id}}">View Logs</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="panel-footer">
+          <a
+            href="/operationhistorymodelview/list/?_flt_0_operation_config={{o_c.id}}&_oc_OperationHistoryModelView=id&_od_OperationHistoryModelView=desc">View History</a>
+        </div>
         {% else %}
-        <span style="min-width: 20px;
-          min-height: 20px;
-          background-color: red;
-          border-radius: 50%;
-          display: inline-block;"></span>
+        <div class="panel-body">There are no records.</div>
         {% endif %}
-          
-        </td>
-      <td>{{obj.operation_name}}</td>
-      <td>{{obj.last_success.strftime("%B %d, %Y - %H:%M")}}</td>
-      <td>{{obj.last_failure.strftime("%B %d, %Y - %H:%M")}}</td>
-    </tr>
-{% endfor %}
-</table>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

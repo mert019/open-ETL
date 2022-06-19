@@ -6,10 +6,18 @@
     background-color: red;
 }
 
+.bg-gray {
+    background-color: gray;
+}
+
 .status-ball {
     display: inline-block;  
     min-width: 10px;
     min-height: 10px;
     border-radius: 50%;
     margin-right: 8px;
+}
+
+.mt-5 {
+    margin-top: 32px;
 }

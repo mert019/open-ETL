@@ -103,6 +103,9 @@ Default admin user:
   - username: admin
   - password: password
 
+### Configuration
+For more information visit https://hub.docker.com/r/mert019/open-etl
+
 ## Documentation
 Documentation will be provided soon.
 

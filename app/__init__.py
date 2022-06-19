@@ -19,7 +19,8 @@ init_db(app)
 
 from database import db
 
-appbuilder = AppBuilder(app, db.session)
+from .index import AppIndexView
+appbuilder = AppBuilder(app, db.session, indexview=AppIndexView)
 
 
 from . import views
