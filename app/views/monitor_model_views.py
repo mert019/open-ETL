@@ -1,4 +1,4 @@
-from flask import redirect, render_template
+from flask import flash, redirect, render_template
 
 from flask_appbuilder.actions import action
 from flask_appbuilder import ModelView, BaseView, expose, has_access
@@ -8,6 +8,9 @@ from app import appbuilder
 
 from config import SQLALCHEMY_DATABASE_URI, STAGING_DATABASE_URI
 
+from database import db
+
+from database.models.extract_file import ExtractFile
 from database.models.operation_history import OperationHistory
 from database.models.operation_config import OperationConfig
 from database.models.operation_history_log import OperationHistoryLog
@@ -41,6 +44,26 @@ class OperationHistoryLogModelView(ModelView):
     list_columns = ['operation_history', 'operation_log_type', 'log_message', 'log_date_time']
 
 appbuilder.add_view(OperationHistoryLogModelView, "Operation Logs", category=MONITOR_CATEGORY_NAME)
+
+
+class ExtractFileModelView(ModelView):
+    datamodel = SQLAInterface(ExtractFile)
+    related_views = [ExtractFile, OperationHistory]
+
+    list_columns = ['operation_history', 'source_name', 'extension', 'process_again']
+
+    @action("extract_again", "Process Again", "Are you sure?", None, multiple=True, single=True)
+    def extract_again(self, items):
+        if isinstance(items, list):
+            for item in items:
+                item.process_again = True
+        else:
+            items.process_again = True
+        db.session.commit()
+        flash("Selected file(s) will be processed in the next operation run.", "success")
+        return redirect("/extractfilemodelview/list/")
+
+appbuilder.add_view(ExtractFileModelView, "Processed Files", category=MONITOR_CATEGORY_NAME)
 
 
 class SystemView(BaseView):

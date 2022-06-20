@@ -1,4 +1,5 @@
 from ftplib import FTP
+import os
 import paramiko
 import re
 from uuid import uuid4
@@ -11,8 +12,10 @@ from database.models.operation_history import OperationHistory
 from operations.extractors.extractor_base import BaseExtractor
 
 
-DOWNLOAD_PATH = 'temp\\extract_files\\'
-
+DOWNLOAD_PATH = os.path.join(os.getcwd(), "temp", "extract_files", "")
+if not os.path.exists(DOWNLOAD_PATH):
+    os.makedirs(DOWNLOAD_PATH)
+    
 
 class FTPExtractor(BaseExtractor):
 
@@ -185,3 +188,14 @@ class FTPExtractor(BaseExtractor):
             self.sftp_download(already_extracted_files, extract_again_files)
         else:
             raise ValueError(f"FTP Type could not matched.")
+
+        # set process_again flag to false for extract_again_files.
+        downloaded_files = self.db.session.query(ExtractFile).join(OperationHistory).filter(OperationHistory.id == self.operation_history.id).all()
+        for d_file in downloaded_files:
+            extracted_again = self.db.session.query(ExtractFile).filter(
+                (ExtractFile.source_name == d_file.source_name)
+                & (ExtractFile.process_again)
+                ).all()
+            for e_a in extracted_again:
+                e_a.process_again = False
+        self.db.session.commit()
