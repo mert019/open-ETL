@@ -20,14 +20,15 @@ class DatabaseLoader(BaseLoader):
 
         self.database_load_config = database_load_config
         self.table = database_load_config.table_name
-        self.database_engine = database_load_config.database_engine
     
         # connection info
-        self.hostname = database_load_config.conn_db_hostname
-        self.port = database_load_config.conn_db_port
-        self.username = database_load_config.conn_db_username
-        self.password = database_load_config.conn_db_password
-        self.database = database_load_config.conn_db_name
+        self.database_connection = database_load_config.database_connection
+        self.database_engine = self.database_connection.database_engine
+        self.hostname = self.database_connection.conn_db_hostname
+        self.port = self.database_connection.conn_db_port
+        self.username = self.database_connection.conn_db_username
+        self.password = self.database_connection.conn_db_password
+        self.database = self.database_connection.conn_db_name
 
         # database load actions
         self.delete_all_before_load = database_load_config.delete_all_before_load

@@ -18,7 +18,7 @@ def loader_factory(load_target, operation_history, db):
     # TO_DATABASE
     if load_target.load_type_id == LoadTypeEnum.TO_DATABASE.value:
         database_load_config = db.session.query(DatabaseLoadConfig).filter_by(load_target_id=load_target.id).first()
-        database_engine = database_load_config.database_engine
+        database_engine = database_load_config.database_connection.database_engine
 
         if database_engine.id == DatabaseEngineEnum.MSSQLSERVER.value:
             loader = MSSQLServerLoader(database_load_config, operation_history, db)

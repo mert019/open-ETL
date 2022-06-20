@@ -2,20 +2,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 
 from database.models.database_engine import DatabaseEngineEnum
+from database.models.database_connection import DatabaseConnection
 
 
-def get_connection_url(database_config) -> URL:
+def get_connection_url(database_conn:DatabaseConnection) -> URL:
     """
-        Returns connection url for given database config.
+        Returns connection url for given database connection.
         Parameters:
-            database_config: DatabaseExtractConfig or DatabaseLoadConfig object.
+            database_conn: DatabaseConnection object.
     """
-    database_engine_id = database_config.database_engine.id
-    hostname = database_config.conn_db_hostname
-    port = database_config.conn_db_port
-    username = database_config.conn_db_username
-    password = database_config.conn_db_password
-    database = database_config.conn_db_name
+    database_engine_id = database_conn.database_engine.id
+    hostname = database_conn.conn_db_hostname
+    port = database_conn.conn_db_port
+    username = database_conn.conn_db_username
+    password = database_conn.conn_db_password
+    database = database_conn.conn_db_name
     conn_url = None
     if database_engine_id == DatabaseEngineEnum.POSTGRESQL.value:
         conn_url = URL('postgresql+psycopg2', username, password, hostname, port, database)
@@ -26,16 +27,16 @@ def get_connection_url(database_config) -> URL:
     return conn_url
 
 
-def check_database_connection(database_config) -> str:
+def check_database_connection(database_conn:DatabaseConnection) -> str:
     """
-        Checks database connection success using the given database configuration.
+        Checks database connection success using the given database connection.
             Parameters:
-                database_config:
-                    DatabaseExtractConfig or DatabaseLoadConfig object.
+                database_conn:
+                    DatabaseConnection object.
             Returns:
                 error_message: Returns error message if connection fails, otherwise returns None.
     """
-    conn_url = get_connection_url(database_config)
+    conn_url = get_connection_url(database_conn)
     return check_database_connection_from_url(conn_url)
 
 

@@ -20,13 +20,14 @@ class DatabaseExtractor(BaseExtractor):
         super().__init__(db, operation_history)
         self.database_extract_config = database_extract_config
         self.query = database_extract_config.query
+        self.database_connection = database_extract_config.database_connection
 
     
     def get_data(self):
         """Extracts data from data source."""
         data = None
 
-        conn_url = get_connection_url(self.database_extract_config)
+        conn_url = get_connection_url(self.database_connection)
         engine = create_engine(conn_url)
         with engine.begin() as connection:
             data = pd.read_sql(self.query, connection)

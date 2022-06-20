@@ -1,5 +1,7 @@
 from database.models.database_engine import DatabaseEngine
 from database.models.ftp_type import FTPType
+from database.models.database_connection import DatabaseConnection
+from database.models.ftp_connection import FtpConnection
 from database.models.column_data_type import ColumnDataType
 from database.models.extract_source import ExtractSource
 from database.models.database_extract_config import DatabaseExtractConfig

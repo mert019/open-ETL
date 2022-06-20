@@ -12,6 +12,8 @@ from wtforms.validators import DataRequired
 from app import appbuilder
 
 from database.models.column_data_type import ColumnDataType
+from database.models.database_connection import DatabaseConnection
+from database.models.ftp_connection import FtpConnection
 from database.models.csv_extract_config import CSVExtractConfig
 from database.models.database_engine import DatabaseEngine
 from database.models.database_extract_config import DatabaseExtractConfig
@@ -51,15 +53,11 @@ appbuilder.add_view(ExtractSourceModelView, "Manage Extract Sources", category=E
 
 class DatabaseExtractConfigModelView(ModelView):
     datamodel = SQLAInterface(DatabaseExtractConfig)
-    related_views = [DatabaseExtractConfig, DatabaseEngine]
+    related_views = [DatabaseExtractConfig, DatabaseConnection]
 
-    edit_columns = ['database_engine', 'conn_db_hostname', 'conn_db_port', 'conn_db_username', 'conn_db_password', 'conn_db_name', 'query']
+    edit_columns = ['database_connection', 'query']
 
     add_form_extra_fields = {
-        'conn_db_password': PasswordField(
-            validators=[DataRequired()],
-            widget=BS3PasswordFieldWidget()),
-
         'extract_source': AJAXSelectField('Extract Source',
             validators=[DataRequired()],
             datamodel=datamodel,
@@ -69,7 +67,7 @@ class DatabaseExtractConfigModelView(ModelView):
 
     @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
     def check_connection(self, item):
-        error_message = check_database_connection(item)
+        error_message = check_database_connection(item.database_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')
         else:
@@ -81,16 +79,11 @@ appbuilder.add_view(DatabaseExtractConfigModelView, "Database Configurations", c
 
 class ExcelExtractConfigModelView(ModelView):
     datamodel = SQLAInterface(ExcelExtractConfig)
-    related_views = [ExcelExtractConfig, FTPType]
+    related_views = [ExcelExtractConfig, FtpConnection]
 
-    edit_columns = ['ftp_type', 'ftp_hostname', 'ftp_port', 'ftp_username', 'ftp_password', 'extract_directory',
-     'read_file_name', 'read_file_name_regex', 'table_start_index', 'ignore_last_n_rows', 'has_headers']
+    edit_columns = ['ftp_connection', 'extract_directory', 'read_file_name', 'read_file_name_regex', 'table_start_index', 'ignore_last_n_rows', 'has_headers']
 
     add_form_extra_fields = {
-        'ftp_password': PasswordField(
-            validators=[DataRequired()],
-            widget=BS3PasswordFieldWidget()),
-
         'extract_source': AJAXSelectField('Extract Source',
             validators=[DataRequired()],
             datamodel=datamodel,
@@ -100,7 +93,7 @@ class ExcelExtractConfigModelView(ModelView):
 
     @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
     def check_connection(self, item):
-        error_message = check_ftp_connection(item)
+        error_message = check_ftp_connection(item.ftp_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')
         else:
@@ -112,16 +105,11 @@ appbuilder.add_view(ExcelExtractConfigModelView, "Excel Configurations", categor
 
 class CSVExtractConfigModelView(ModelView):
     datamodel = SQLAInterface(CSVExtractConfig)
-    related_views = [CSVExtractConfig, FTPType]
+    related_views = [CSVExtractConfig, FtpConnection]
 
-    edit_columns = ['ftp_type', 'ftp_hostname', 'ftp_port', 'ftp_username', 'ftp_password', 'extract_directory',
-     'read_file_name', 'read_file_name_regex', 'seperator', 'table_start_index', 'ignore_last_n_rows', 'has_headers']
+    edit_columns = ['ftp_connection', 'extract_directory', 'read_file_name', 'read_file_name_regex', 'seperator', 'table_start_index', 'ignore_last_n_rows', 'has_headers']
 
     add_form_extra_fields = {
-        'ftp_password': PasswordField(
-            validators=[DataRequired()],
-            widget=BS3PasswordFieldWidget()),
-
         'extract_source': AJAXSelectField('Extract Source',
             validators=[DataRequired()],
             datamodel=datamodel,
@@ -131,7 +119,7 @@ class CSVExtractConfigModelView(ModelView):
     
     @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
     def check_connection(self, item):
-        error_message = check_ftp_connection(item)
+        error_message = check_ftp_connection(item.ftp_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')
         else:

@@ -12,7 +12,7 @@ from wtforms.validators import DataRequired
 from app import appbuilder
 
 from database.models.column_data_type import ColumnDataType
-from database.models.database_engine import DatabaseEngine
+from database.models.database_connection import DatabaseConnection
 from database.models.database_load_config import DatabaseLoadConfig
 from database.models.load_column import LoadColumn
 from database.models.load_target import LoadTarget
@@ -47,16 +47,11 @@ appbuilder.add_view(LoadTargetModelView, "Manage Load Targets", category=LOAD_CA
 
 class DatabaseLoadConfigModelView(ModelView):
     datamodel = SQLAInterface(DatabaseLoadConfig)
-    related_views = [DatabaseLoadConfig, DatabaseEngine]
+    related_views = [DatabaseLoadConfig, DatabaseConnection]
 
-    edit_columns = ['database_engine', 'table_name', 'conn_db_hostname', 'conn_db_port', 'conn_db_username', 'conn_db_password', 'conn_db_name',
-                        'delete_all_before_load', 'insert_record', 'update_record']
+    edit_columns = ['database_connection', 'table_name', 'delete_all_before_load', 'insert_record', 'update_record']
 
     add_form_extra_fields = {
-        'conn_db_password': PasswordField(
-            validators=[DataRequired()],
-            widget=BS3PasswordFieldWidget()),
-
         'load_target': AJAXSelectField('Load Target',
             validators=[DataRequired()],
             datamodel=datamodel,
@@ -66,7 +61,7 @@ class DatabaseLoadConfigModelView(ModelView):
 
     @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
     def check_connection(self, item):
-        error_message = check_database_connection(item)
+        error_message = check_database_connection(item.database_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')
         else:

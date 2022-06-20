@@ -2,16 +2,11 @@ from flask_appbuilder import Model
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 
-
-from database.models.ftp_type import FTPType
+from database.models.ftp_connection import FtpConnection
 
 
 class CSVExtractConfig(Model):
     id = Column(Integer, primary_key=True)
-    ftp_hostname = Column(String(256), nullable=False)
-    ftp_port = Column(Integer, nullable=False)
-    ftp_username = Column(String(256), nullable=False)
-    ftp_password = Column(String(256), nullable=False)
     extract_directory = Column(String(512), unique=False, nullable=True)
     seperator = Column(String(8), nullable=True)
     read_file_name = Column(String(512), nullable=True)
@@ -20,10 +15,10 @@ class CSVExtractConfig(Model):
     ignore_last_n_rows = Column(Integer, nullable=True)
     has_headers = Column(Boolean, nullable=True, default=True)
     extract_source_id = Column(Integer, ForeignKey('extract_source.id'), unique=True, nullable=False)
-    ftp_type_id = Column(Integer, ForeignKey('ftp_type.id'), nullable=False)
+    ftp_connection_id = Column(Integer, ForeignKey('ftp_connection.id'), unique=False, nullable=False)
 
     extract_source = relationship('ExtractSource', foreign_keys=[extract_source_id])
-    ftp_type = relationship('FTPType', foreign_keys=[ftp_type_id])
+    ftp_connection = relationship('FtpConnection', foreign_keys=[ftp_connection_id])
 
     def __repr__(self):
-        return f"CSV from {self.ftp_hostname}"
+        return f"CSV from {self.ftp_connection.ftp_hostname}"

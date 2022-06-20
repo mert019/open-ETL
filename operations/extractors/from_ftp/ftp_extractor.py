@@ -32,11 +32,12 @@ class FTPExtractor(BaseExtractor):
         self.read_file_name_regex = ftp_sourced_extract_config.read_file_name_regex
 
         # connection info
-        self.ftp_type = ftp_sourced_extract_config.ftp_type
-        self.hostname = ftp_sourced_extract_config.ftp_hostname
-        self.port = ftp_sourced_extract_config.ftp_port
-        self.username = ftp_sourced_extract_config.ftp_username
-        self.password = ftp_sourced_extract_config.ftp_password
+        self.ftp_connection = ftp_sourced_extract_config.ftp_connection
+        self.ftp_type = self.ftp_connection.ftp_type
+        self.hostname = self.ftp_connection.ftp_hostname
+        self.port = self.ftp_connection.ftp_port
+        self.username = self.ftp_connection.ftp_username
+        self.password = self.ftp_connection.ftp_password
     
 
     def get_operation_file_extension(self):

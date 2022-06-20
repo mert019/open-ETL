@@ -2,22 +2,23 @@ from ftplib import FTP
 import paramiko
 
 from database.models.ftp_type import FTPTypeEnum
+from database.models.ftp_connection import FtpConnection
 
 
-def check_ftp_connection(ftp_config):
+def check_ftp_connection(ftp_conn:FtpConnection):
     """
-        Checks ftp/sftp connection success using the given ftp configuration.
+        Checks ftp/sftp connection success using the given ftp connection.
             Parameters:
-                ftp_config:
-                    ExcelExtractConfig or CSVExtractConfig object.
+                ftp_conn:
+                    FtpConnection object.
             Returns:
                 error_message: Returns error message if connection fails, otherwise returns None.
     """
-    hostname = ftp_config.ftp_hostname
-    port = ftp_config.ftp_port
-    username = ftp_config.ftp_username
-    password = ftp_config.ftp_password
-    ftp_type_id = ftp_config.ftp_type_id
+    hostname = ftp_conn.ftp_hostname
+    port = ftp_conn.ftp_port
+    username = ftp_conn.ftp_username
+    password = ftp_conn.ftp_password
+    ftp_type_id = ftp_conn.ftp_type_id
 
     try:
 
