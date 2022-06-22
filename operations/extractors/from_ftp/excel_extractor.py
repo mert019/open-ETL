@@ -46,12 +46,12 @@ class ExcelExtractor(FTPExtractor):
                 df.drop(df.tail(self.ignore_last_n_rows).index, inplace=True)
 
             # combine data table
-            if combined_data_frames == None:
+            if type(combined_data_frames) != pd.DataFrame:
                 combined_data_frames = df.copy()
             else:
                 combined_data_frames = combined_data_frames.append(df, ignore_index=True)
 
-        self.log_extract_amount(0 if combined_data_frames == None else combined_data_frames.shape[0])
-        if combined_data_frames != None:
+        self.log_extract_amount(0 if type(combined_data_frames) != pd.DataFrame else combined_data_frames.shape[0])
+        if type(combined_data_frames) == pd.DataFrame:
             combined_data_frames = self.rename_data_table_columns(self.has_headers, combined_data_frames)
         return combined_data_frames
