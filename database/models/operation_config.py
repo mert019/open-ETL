@@ -13,6 +13,7 @@ class OperationConfig(Model):
     is_schedule_enabled = Column(Boolean, default=False)
     schedule_interval = Column(Integer, nullable=False)
     transform_query = Column(String(4096), nullable=False)
+    show_on_dashboard = Column(Boolean, default=False)
     extract_source_id = Column(Integer, ForeignKey('extract_source.id'), nullable=False)
     load_target_id = Column(Integer, ForeignKey('load_target.id'), nullable=False)
     schedule_unit_id = Column(Integer, ForeignKey('schedule_unit.id'), nullable=False)

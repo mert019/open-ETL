@@ -14,7 +14,7 @@
   <p>Updated at {{ updated_at.strftime("%m/%d/%Y, %H:%M:%S") }}</p>
 
   {% if operation_summary|length == 0 %}
-  <p>There is no defined operation.</p>
+  <p>There is no operation added to dashboard view.</p>
   {% endif %}
 
   {% for o_c in operation_summary %}

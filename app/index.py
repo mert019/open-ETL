@@ -15,7 +15,7 @@ class AppIndexView(IndexView):
     @has_access
     def index(self):
         operation_summary = {} # key: operation_config, value: list of operation history.
-        operation_configs = db.session.query(OperationConfig).all()
+        operation_configs = db.session.query(OperationConfig).filter_by(show_on_dashboard=True).all()
         for o_c in operation_configs:
             # get latest 5 item.
             o_h = db.session.query(OperationHistory).filter_by(operation_config_id=o_c.id).order_by(desc(OperationHistory.start_date_time)).limit(5).all()

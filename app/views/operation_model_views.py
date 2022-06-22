@@ -26,13 +26,13 @@ class OperationConfigModelView(ModelView):
     datamodel = SQLAInterface(OperationConfig)
     related_views = [OperationConfig, ExtractSource, LoadTarget]
 
-    add_columns = ['operation_name', 'extract_source', 'load_target', 'description', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query']
+    add_columns = ['operation_name', 'extract_source', 'load_target', 'description', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query', 'show_on_dashboard']
 
-    edit_columns = ['operation_name', 'extract_source', 'load_target',  'description', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query']
+    edit_columns = ['operation_name', 'extract_source', 'load_target',  'description', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query',  'show_on_dashboard']
     
-    list_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval']
+    list_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval',  'show_on_dashboard']
 
-    show_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query']
+    show_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query', 'show_on_dashboard']
 
     add_form_extra_fields = {
         'description': TextAreaField(
