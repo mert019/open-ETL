@@ -47,13 +47,13 @@ class CSVExtractor(FTPExtractor):
                 df.drop(df.tail(self.ignore_last_n_rows).index, inplace=True)
             
             # combine data table
-            if combined_data_frames is None:
+            if combined_data_frames == None:
                 combined_data_frames = df.copy()
             else:
                 combined_data_frames = combined_data_frames.append(df, ignore_index=True)
         
-        if combined_data_frames is not None:
-            self.log_extract_amount(combined_data_frames.shape[0])
+        self.log_extract_amount(0 if combined_data_frames == None else combined_data_frames.shape[0])
+        if combined_data_frames != None:
             combined_data_frames = self.rename_data_table_columns(self.has_headers, combined_data_frames)
 
         return combined_data_frames

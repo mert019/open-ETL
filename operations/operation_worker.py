@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_appbuilder import SQLA
 import logging
+import pandas as pd
 from queue import Queue
 from time import sleep
 import threading
@@ -104,7 +105,7 @@ class OperationWorker:
         data = extractor.get_data()
 
         # Use staging database only if transform query exists.
-        if operation_config.transform_query and len(operation_config.transform_query) > 0:
+        if type(data) == pd.DataFrame and data.shape[0] != 0 and operation_config.transform_query and len(operation_config.transform_query) > 0:
             staging_handler = StagingHandler()
             # load data to staging database.
             staging_handler.load(data, operation_config.operation_name)
@@ -114,7 +115,7 @@ class OperationWorker:
             OperationHistoryLog.create(self.db, operation_history.id, f"{data.shape[0]} rows extracted from staging database.", OperationLogTypeEnum.INFO.value)
 
         # load data
-        loader.load_data(data, load_columns)
+        type(data) == pd.DataFrame and data.shape[0] != 0 and loader.load_data(data, load_columns)
 
 
     def finish_operation_loop(self) -> None:
