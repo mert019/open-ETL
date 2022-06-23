@@ -14,8 +14,9 @@ from database.models.schedule_unit import ScheduleUnitEnum
 
 class OperationScheduler:
 
-    def __init__(self, queue:Queue):
+    def __init__(self, queue:Queue, running_operations:set):
         self.queue = queue
+        self.running_operations = running_operations
 
 
     def run(self, db:SQLA):
@@ -84,6 +85,7 @@ class OperationScheduler:
         operation_config.is_in_process = True
         self.db.session.commit()
         self.queue.put(oper_history.id)
+        self.running_operations.add(oper_history.id)
         OperationHistoryLog.create(self.db, oper_history.id, "Added to queue.", OperationLogTypeEnum.INFO.value)
         return oper_history.id
         

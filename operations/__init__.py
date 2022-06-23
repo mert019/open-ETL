@@ -5,6 +5,8 @@ from queue import Queue
 
 queue = Queue()
 
-operation_scheduler = OperationScheduler(queue)
+running_operations = set()
 
-operation_worker = OperationWorker(queue)
+operation_scheduler = OperationScheduler(queue, running_operations)
+
+operation_worker = OperationWorker(queue, running_operations)

@@ -106,8 +106,5 @@ Default admin user:
 ### Configuration
 For more information visit https://hub.docker.com/r/mert019/open-etl
 
-## Documentation
-Documentation will be provided soon.
-
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

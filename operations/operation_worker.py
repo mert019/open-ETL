@@ -22,8 +22,9 @@ from operations.staging_handler import StagingHandler
 
 class OperationWorker:
 
-    def __init__(self, queue:Queue):
+    def __init__(self, queue:Queue, running_operations:set):
         self.queue = queue
+        self.running_operations = running_operations
         self.finished_operations = []
         self.worker_threads = []
 
@@ -141,5 +142,7 @@ class OperationWorker:
             operation_history.operation_config.is_in_process = False
             self.db.session.commit()
             successfully_setted.append(operation_history_id)
+            if operation_history_id in self.running_operations:
+                self.running_operations.remove(operation_history_id)
         for i in successfully_setted:
             self.finished_operations.remove(i)

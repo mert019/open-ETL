@@ -43,8 +43,8 @@
           <tbody>
             {% for o_h in operation_summary[o_c] %}
             <tr>
-              <td class="text-center"><span class="status-ball {{ 'bg-green' if o_h.is_successfully_ended else 'bg-red' if o_h.end_date_time else 'bg-gray' if (updated_at - o_h.start_date_time) < timedelta(minutes=10) else 'bg-red' }}"></span></td>
-              <td class="text-center">{{ 'Successful' if o_h.is_successfully_ended else 'Failed' if o_h.end_date_time else 'In Progress' if (updated_at - o_h.start_date_time) < timedelta(minutes=10) else 'Failed' }}</td>
+              <td class="text-center"><span class="status-ball {{ 'bg-green' if o_h.is_successfully_ended else 'bg-red' if o_h.end_date_time else 'bg-gray' if o_h.id in running_operations else 'bg-red' }}"></span></td>
+              <td class="text-center">{{ 'Successful' if o_h.is_successfully_ended else 'Failed' if o_h.end_date_time else 'In Progress' if o_h.id in running_operations else 'Failed' }}</td>
               <td class="text-center">{{ o_h.start_date_time.strftime("%m/%d/%Y, %H:%M:%S") }}</td>
               <td class="text-center">{{ o_h.end_date_time.strftime("%m/%d/%Y, %H:%M:%S") if o_h.end_date_time else '-' }}</td>
               <td class="text-center">{{ o_h.records_extracted }}</td>
