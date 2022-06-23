@@ -1,0 +1,831 @@
+[
+    {
+        "name": "ETL_USER",
+        "permissions": [
+            {
+                "permission": {
+                    "name": "can_index"
+                },
+                "view_menu": {
+                    "name": "AppIndexView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_get"
+                },
+                "view_menu": {
+                    "name": "MenuApi"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "ExtractSourceModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "ExtractSourceModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "ExtractSourceModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "ExtractSourceModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "ExtractSourceModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "ExtractSourceModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Manage Extract Sources"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Extract"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "check_connection"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Database Configurations"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "check_connection"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Excel Configurations"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "check_connection"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "CSV Configurations"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "ExtractColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "ExtractColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "ExtractColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "ExtractColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "ExtractColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "ExtractColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Manage Columns"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "LoadTargetModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "LoadTargetModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "LoadTargetModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "LoadTargetModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "LoadTargetModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "LoadTargetModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Manage Load Targets"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Load"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "check_connection"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Database Configuration"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "LoadColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "LoadColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "LoadColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "LoadColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "LoadColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "LoadColumnModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_delete"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "run_operation"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "view_operation_history"
+                },
+                "view_menu": {
+                    "name": "OperationConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Manage Operations"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Operation"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "OperationHistoryModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "OperationHistoryModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "OperationHistoryModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "view_operation_history_logs"
+                },
+                "view_menu": {
+                    "name": "OperationHistoryModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Operation History"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Monitor"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "OperationHistoryLogModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "OperationHistoryLogModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "OperationHistoryLogModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Operation Logs"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_edit"
+                },
+                "view_menu": {
+                    "name": "ExtractFileModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_list"
+                },
+                "view_menu": {
+                    "name": "ExtractFileModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_show"
+                },
+                "view_menu": {
+                    "name": "ExtractFileModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_add"
+                },
+                "view_menu": {
+                    "name": "ExtractFileModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_download"
+                },
+                "view_menu": {
+                    "name": "ExtractFileModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "extract_again"
+                },
+                "view_menu": {
+                    "name": "ExtractFileModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "Processed Files"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_status"
+                },
+                "view_menu": {
+                    "name": "SystemView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "menu_access"
+                },
+                "view_menu": {
+                    "name": "System Status"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_csv_extract_config_extract_source_feed"
+                },
+                "view_menu": {
+                    "name": "DropdownFeederApi"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_database_extract_config_extract_source_feed"
+                },
+                "view_menu": {
+                    "name": "DropdownFeederApi"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_excel_extract_config_extract_source_feed"
+                },
+                "view_menu": {
+                    "name": "DropdownFeederApi"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_database_load_config_load_target_feed"
+                },
+                "view_menu": {
+                    "name": "DropdownFeederApi"
+                }
+            },
+            {
+                "permission": {
+                    "name": "test_connection"
+                },
+                "view_menu": {
+                    "name": "DatabaseConnectionModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "test_connection"
+                },
+                "view_menu": {
+                    "name": "FtpConnectionModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "test_connection"
+                },
+                "view_menu": {
+                    "name": "DatabaseExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "test_connection"
+                },
+                "view_menu": {
+                    "name": "ExcelExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "test_connection"
+                },
+                "view_menu": {
+                    "name": "CSVExtractConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "test_connection"
+                },
+                "view_menu": {
+                    "name": "DatabaseLoadConfigModelView"
+                }
+            },
+            {
+                "permission": {
+                    "name": "can_userinfo"
+                },
+                "view_menu": {
+                    "name": "UserDBModelView"
+                }
+            }
+        ]
+    }
+]

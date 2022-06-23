@@ -2,11 +2,11 @@ from flask import flash, redirect
 
 from flask_appbuilder.actions import action
 from flask_appbuilder.fields import AJAXSelectField
-from flask_appbuilder.fieldwidgets import BS3TextAreaFieldWidget, Select2AJAXWidget, Select2SlaveAJAXWidget
+from flask_appbuilder.fieldwidgets import BS3TextAreaFieldWidget, Select2AJAXWidget, Select2SlaveAJAXWidget, BS3TextFieldWidget
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView
 
-from wtforms import TextAreaField
+from wtforms import TextAreaField, TextField
 from wtforms.validators import DataRequired, Regexp
 
 from app import appbuilder
@@ -35,8 +35,8 @@ class OperationConfigModelView(ModelView):
     show_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query', 'show_on_dashboard']
 
     add_form_extra_fields = {
-        'operation_name': TextAreaField(
-            widget=BS3TextAreaFieldWidget(),
+        'operation_name': TextField(
+            widget=BS3TextFieldWidget(),
             validators=[Regexp("^[A-Za-z]*$")],
             description="Operation name should contain only letters. Do not use a reserved keyword in database."),
         
@@ -49,8 +49,8 @@ class OperationConfigModelView(ModelView):
     }
 
     edit_form_extra_fields = {
-        'operation_name': TextAreaField(
-            widget=BS3TextAreaFieldWidget(),
+        'operation_name': TextField(
+            widget=BS3TextFieldWidget(),
             validators=[Regexp("^[A-Za-z]*$")],
             description="Operation name should contain only letters. Do not use a reserved keyword in database."),
             
