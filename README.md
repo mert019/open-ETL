@@ -14,15 +14,47 @@
 
 Open ETL is a simplified tool to extract data from data sources, process data and to load the extracted & processed data to data targets. 
 
-## Project Status
-This project is currently in development. \
-Current version is developed for prototyping purposes, some parts may change in the future. \
-If you have any comments/ideas for this project, you can write it under this issue https://github.com/mert019/open-ETL/issues/1
-
 ## Why Open ETL?
 Easy to install and configure. \
 Simplified web based interface to create ETL operations. \
 Detailed monitoring of the ETL operations.
+
+## Screenshots
+\
+**Dashboard**
+\
+<img src="./app/static/imgs/dashboard.png"/>
+<br>
+\
+**Operation Logs**
+\
+<img src="./app/static/imgs/logs.png"/>
+<br>
+\
+**System Status**
+\
+<img src="./app/static/imgs/system_status.png"/>
+<br>
+\
+**Operation Configuration**
+\
+<img src="./app/static/imgs/operation_config.png"/>
+<br>
+\
+**Data Source Configuration**
+\
+<img src="./app/static/imgs/db_extract_config.png"/>
+<br>
+\
+**Data Target Configuration**
+\
+<img src="./app/static/imgs/db_load_config.png"/>
+<br>
+\
+**Database Connection**
+\
+<img src="./app/static/imgs/db_connection.png"/>
+<br>
 
 ## Supported Data Sources
 Open ETL can extract data from databases (MS SQL Server, Postgresql) and XLSX & CSV files from FTP/SFTP servers. If you want additional data sources please create an issue.
