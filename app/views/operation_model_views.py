@@ -7,7 +7,7 @@ from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView
 
 from wtforms import TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Regexp
 
 from app import appbuilder
 
@@ -35,19 +35,31 @@ class OperationConfigModelView(ModelView):
     show_columns = ['operation_name', 'extract_source', 'load_target', 'is_schedule_enabled', 'schedule_unit', 'schedule_interval', 'transform_query', 'show_on_dashboard']
 
     add_form_extra_fields = {
+        'operation_name': TextAreaField(
+            widget=BS3TextAreaFieldWidget(),
+            validators=[Regexp("^[A-Za-z]*$")],
+            description="Operation name should contain only letters. Do not use a reserved keyword in database."),
+        
         'description': TextAreaField(
             widget=BS3TextAreaFieldWidget()),
 
         'transform_query': TextAreaField(
-            widget=BS3TextAreaFieldWidget()),
+            widget=BS3TextAreaFieldWidget(),
+            description="Use operation name as table."),
     }
 
     edit_form_extra_fields = {
+        'operation_name': TextAreaField(
+            widget=BS3TextAreaFieldWidget(),
+            validators=[Regexp("^[A-Za-z]*$")],
+            description="Operation name should contain only letters. Do not use a reserved keyword in database."),
+            
         'description': TextAreaField(
             widget=BS3TextAreaFieldWidget()),
 
         'transform_query': TextAreaField(
-            widget=BS3TextAreaFieldWidget()),
+            widget=BS3TextAreaFieldWidget(),
+            description="Use operation name as table."),
     }
 
     @action("run_operation", "Run Now", confirmation="Are you sure you want to run this operation?", icon="fa-play", multiple=False)

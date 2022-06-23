@@ -38,16 +38,6 @@ class ExtractSourceModelView(ModelView):
 
     edit_columns = ['extract_source_name']
 
-    add_form_extra_fields = {
-        'description': TextAreaField(
-            widget=BS3TextAreaFieldWidget())
-    }
-
-    edit_form_extra_fields = {
-        'description': TextAreaField(
-            widget=BS3TextAreaFieldWidget())
-    }
-
 appbuilder.add_view(ExtractSourceModelView, "Manage Extract Sources", category=EXTRACT_CATEGORY_NAME)
 
 
@@ -63,10 +53,16 @@ class DatabaseExtractConfigModelView(ModelView):
             datamodel=datamodel,
             col_name='extract_source',
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/databaseextractconfig_extractsourcefeed')),
+
+        'query': TextAreaField(widget=BS3TextAreaFieldWidget()),
     }
 
-    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
-    def check_connection(self, item):
+    edit_form_extra_fields = {
+        'query': TextAreaField(widget=BS3TextAreaFieldWidget()),
+    }
+
+    @action("test_connection", "Test Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def test_connection(self, item):
         error_message = check_database_connection(item.database_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')
@@ -83,6 +79,14 @@ class ExcelExtractConfigModelView(ModelView):
 
     edit_columns = ['ftp_connection', 'extract_directory', 'read_file_name', 'read_file_name_regex', 'table_start_index', 'ignore_last_n_rows', 'has_headers']
 
+    label_columns = {
+        "extract_directory": "Remote Directory",
+        "read_file_name": "Remote File Name",
+        "read_file_name_regex": "Filter File Names with Regex",
+        "has_headers": "Has Header Row",
+        "extract_source": "Extract Source",
+    }
+
     add_form_extra_fields = {
         'extract_source': AJAXSelectField('Extract Source',
             validators=[DataRequired()],
@@ -91,8 +95,8 @@ class ExcelExtractConfigModelView(ModelView):
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/excelextractconfig_extractsourcefeed')),
     }
 
-    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
-    def check_connection(self, item):
+    @action("test_connection", "Test Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def test_connection(self, item):
         error_message = check_ftp_connection(item.ftp_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')
@@ -109,6 +113,14 @@ class CSVExtractConfigModelView(ModelView):
 
     edit_columns = ['ftp_connection', 'extract_directory', 'read_file_name', 'read_file_name_regex', 'seperator', 'table_start_index', 'ignore_last_n_rows', 'has_headers']
 
+    label_columns = {
+        "extract_directory": "Remote Directory",
+        "read_file_name": "Remote File Name",
+        "read_file_name_regex": "Filter File Names with Regex",
+        "has_headers": "Has Header Row",
+        "extract_source": "Extract Source",
+    }
+
     add_form_extra_fields = {
         'extract_source': AJAXSelectField('Extract Source',
             validators=[DataRequired()],
@@ -117,8 +129,8 @@ class CSVExtractConfigModelView(ModelView):
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/csvextractconfig_extractsourcefeed')),
     }
     
-    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
-    def check_connection(self, item):
+    @action("test_connection", "Test Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def test_connection(self, item):
         error_message = check_ftp_connection(item.ftp_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')

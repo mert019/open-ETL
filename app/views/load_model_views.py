@@ -32,16 +32,6 @@ class LoadTargetModelView(ModelView):
 
     edit_columns = ['load_target_name']
 
-    add_form_extra_fields = {
-        'description': TextAreaField(
-            widget=BS3TextAreaFieldWidget())
-    }
-
-    edit_form_extra_fields = {
-        'description': TextAreaField(
-            widget=BS3TextAreaFieldWidget())
-    }
-
 appbuilder.add_view(LoadTargetModelView, "Manage Load Targets", category=LOAD_CATEGORY_NAME)
 
 
@@ -59,8 +49,8 @@ class DatabaseLoadConfigModelView(ModelView):
             widget=Select2AJAXWidget(endpoint='/api/v1/dropdownfeederapi/databaseloadconfig_loadtargetfeed')),
     }
 
-    @action("check_connection", "Check Connection", confirmation=None, icon="fa-signal", multiple=False)
-    def check_connection(self, item):
+    @action("test_connection", "Test Connection", confirmation=None, icon="fa-signal", multiple=False)
+    def test_connection(self, item):
         error_message = check_database_connection(item.database_connection)
         if error_message:
             flash(f"ERROR: {error_message}", 'warning')
