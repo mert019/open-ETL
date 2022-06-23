@@ -23,37 +23,37 @@ Detailed monitoring of the ETL operations.
 \
 **Dashboard**
 \
-<img src="./app/static/imgs/dashboard.png"/>
+<img src="app/static/imgs/dashboard.png"/>
 <br>
 \
 **Operation Logs**
 \
-<img src="./app/static/imgs/logs.png"/>
+<img src="app/static/imgs/logs.png"/>
 <br>
 \
 **System Status**
 \
-<img src="./app/static/imgs/system_status.png"/>
+<img src="app/static/imgs/system_status.png"/>
 <br>
 \
 **Operation Configuration**
 \
-<img src="./app/static/imgs/operation_config.png"/>
+<img src="app/static/imgs/operation_config.png"/>
 <br>
 \
 **Data Source Configuration**
 \
-<img src="./app/static/imgs/db_extract_config.png"/>
+<img src="app/static/imgs/db_extract_config.png"/>
 <br>
 \
 **Data Target Configuration**
 \
-<img src="./app/static/imgs/db_load_config.png"/>
+<img src="app/static/imgs/db_load_config.png"/>
 <br>
 \
 **Database Connection**
 \
-<img src="./app/static/imgs/db_connection.png"/>
+<img src="app/static/imgs/db_connection.png"/>
 <br>
 
 ## Supported Data Sources
