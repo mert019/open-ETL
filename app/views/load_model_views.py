@@ -39,7 +39,7 @@ class DatabaseLoadConfigModelView(ModelView):
     datamodel = SQLAInterface(DatabaseLoadConfig)
     related_views = [DatabaseLoadConfig, DatabaseConnection]
 
-    edit_columns = ['database_connection', 'table_name', 'delete_all_before_load', 'insert_record', 'update_record']
+    edit_columns = ['database_connection', 'table_name', 'delete_all_before_load', 'insert_record', 'update_record', 'start_transaction']
 
     add_form_extra_fields = {
         'load_target': AJAXSelectField('Load Target',

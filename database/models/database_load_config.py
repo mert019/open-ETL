@@ -11,6 +11,7 @@ class DatabaseLoadConfig(Model):
     delete_all_before_load = Column(Boolean, default=False)
     insert_record = Column(Boolean, default=True)
     update_record = Column(Boolean, default=False)
+    start_transaction = Column(Boolean, default=False)
     load_target_id = Column(Integer, ForeignKey('load_target.id'), nullable=False, unique=True)
     database_connection_id = Column(Integer, ForeignKey('database_connection.id'), nullable=False)
 
